@@ -1,0 +1,15 @@
+{
+  "npm": true,
+  "moduleResolution": "node",
+  "entrypoint": "src/index.html",
+  "shell": "src/core/oxq-problem.js",
+  "extraDependencies": [
+  ],
+  "builds": [{
+    "name": "oxq",
+    "bundle": true,
+    "js": {
+      "minify": true
+    }
+  }]
+}

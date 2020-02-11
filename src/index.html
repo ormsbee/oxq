@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>OXQ Demonstration</title>
+  <script type="module" src="src/core/oxq-problem.js"></script>
+  <script type="module" src="src/core/oxq-template.js"></script>
+  <script type="module" src="src/inputs/mitodl-genemutationinput.js"></script>
+  <style>
+    body {
+      font-family: "Roboto Sans-Serif", sans-serif;
+    }
+    fieldset {
+      margin: 0.5em 0.5em 2em 0.5em;
+      padding: 0.5em;
+    }
+    legend {
+      font-weight: bold;
+      border: 1px solid black;
+      padding: 1em;
+    }
+  </style>
+</head>
+<body>
+  <h1>OXQ Demonstration</h1>
+
+  <!-- This should be refreshed every time, as variant might change based on
+       the number of attempts. Also, the state dict here should point to the
+       problem, rather than the other way around. We should also be able to use
+       this info across multiple problems (variant, not input state).
+
+       Fill in copy-over analogy rather than shared state.
+      -->
+  <script id="oxq.policy" type="oxq/data">
+    {
+      "user": "dormsbee",
+      "policy": { "num_attempts": 5 },
+      "problems": ["dominant_vs_recessive"],
+      "schedule": {
+        "start": "2019-09-01T00:00:00.000Z",
+        "due": "2019-09-10T00:00:00.000Z"
+      }
+    }
+  </script>
+
+
+  <!--
+     "input_state": {
+      },
+    Line between Variant and Policy is blurry.
+
+  -->
+
+  <!--
+    Okay, new Idea: Maybe we can just make the whole thing a template and let
+    people put anything they want in slots?
+
+    We can put an optional <script> section inside the problem with a different
+    type so it's not globally applied, but we would read it and allow them to
+    add to the variant/policy data.
+
+    Another thing to do would be to make a method in our generic Input subclass
+    that would explicitly determine assumptions.
+  -->
+  <oxq-problem title="Dominant versus Recessive" id="dominant_vs_recessive">
+    <oxq-prompt>
+      <p>
+        Thinking through the three possible genotypes (allele combinations
+        associated with gray body color) for Mutant 1 and the expected results
+        may help you determine if the gray body color phenotype is dominant or
+        recessive relative to the wild-type brown body color.
+      </p>
+      <p>
+        Complete the tables below to think through what the genetic data would
+        look like in each of the three cases. For each table, use G as the
+        allele associated with the dominant body color phenotype and g as the
+        allele associated with the recessive body color phenotype. You do not
+        need the StarGenetics tool to complete these tables.
+      </p>
+    </oxq-prompt>
+    <fieldset name="part1">
+      <legend>
+        If Mutant 1 is heterozygous for the allele associated with gray body
+        color and the mutant gray body phenotype is <em>dominant</em>:
+      </legend>
+      <mitodl-genemutationinput name="heterozygous_phenotype_dominant">
+        <mitodl-genemutationinput-parent name="mutant1" title="Mutant 1" sex="M"
+                                         genes="Gg" phenotype="Gray">
+          <picture><img src="images/mutant_1.png" alt="Gray Bug" width="45" height="56"/></picture>
+        </mitodl-genemutationinput-parent>
+        <mitodl-genemutationinput-parent name="wildTypeF" title="Wild Type F" sex="F"
+                                         genes="gg" phenotype="Wild Type">
+          <picture><img src="images/wild_type_f.png" alt="Brown Bug" width="45" height="56"/></picture>
+        </mitodl-genemutationinput-parent>
+      </mitodl-genemutationinput>
+    </fieldset>
+
+    <fieldset name="part2">
+      <legend>
+        If Mutant 1 is homozygous for the allele associated with gray body
+        color and the mutant gray body phenotype is <em>dominant</em>:
+      </legend>
+      <mitodl-genemutationinput name="homozygous_phenotype_dominant">
+        <mitodl-genemutationinput-parent name="mutant1" title="Mutant 1" sex="M"
+                                         genes="GG" phenotype="Gray">
+          <picture><img src="images/mutant_1.png" alt="Gray Bug" width="45" height="56"/></picture>
+        </mitodl-genemutationinput-parent>
+        <mitodl-genemutationinput-parent name="wildTypeF" title="Wild Type F" sex="F"
+                                         genes="gg" phenotype="Wild Type">
+          <picture><img src="images/wild_type_f.png" alt="Brown Bug" width="45" height="56"/></picture>
+        </mitodl-genemutationinput-parent>
+      </mitodl-genemutationinput>
+    </fieldset>
+
+    <fieldset name="part3">
+      <legend>
+        If Mutant 1 is homozygous for the allele associated with gray body
+        color and the mutant gray body phenotype is <em>recessive</em>:
+      </legend>
+      <mitodl-genemutationinput name="homozygous_phenotype_recessive">
+        <mitodl-genemutationinput-parent name="mutant1" title="Mutant 1" sex="M"
+                                         genes="GG" phenotype="Gray">
+          <picture><img src="images/mutant_1.png" alt="Gray Bug" width="45" height="56"/></picture>
+        </mitodl-genemutationinput-parent>
+        <mitodl-genemutationinput-parent name="wildTypeF" title="Wild Type F" sex="F"
+                                         genes="gg" phenotype="Wild Type">
+          <picture><img src="images/wild_type_f.png" alt="Brown Bug" width="45" height="56"/></picture>
+        </mitodl-genemutationinput-parent>
+      </mitodl-genemutationinput>
+    </fieldset>
+  </oxq-problem>
+
+<!--
+  input values:
+
+  // fieldset
+  {
+    "part1": [
+      {
+        "name": "homozygous_phenotype_dominant",
+        "value": {
+          "table": ["Gg", "gg", "Gg", "gg"],
+          "genotypes_ratio": [1, 0],
+          "phenotypes_ratio": [1, 0]
+        }
+      }
+    ],
+
+  }
+
+  <oxq-graders for="awesome_problem">
+    <correct>
+
+    </correct>
+  </oxq-graders>
+
+  <hr/>
+  <oxq-problem title="Numbers are Fun" id="awesome_problem">
+      <oxq-prompt>
+        Two numbers met each other in a deep dark wood...
+      </oxq-prompt>
+      <p>
+        Three numbers met each other in a deep dark wood...
+      </p>
+
+      <fieldset name="addition">
+        <legend>What is {{x}} + {{y}}?</legend>
+        <input type="text" name="x_plus_y"/>
+      </fieldset>
+
+      <fieldset name="tmpl_demo">
+        <legend>
+          What is <slot name="x">x</slot> + <slot name="y">y</slot>?
+        </legend>
+        <input type="text" name="x_y"/>
+      </fieldset>
+
+      <fieldset name="squares">
+        <legend>If the square of a number is {{x^2}}, what could x be?</legend>
+        <input type="text" name="squares_1"/><br/>
+        <input type="text" name="squares_2"/>
+      </fieldset>
+
+      <mitodl-genemutationinput>
+        <legend>
+          If Mutant 1 is homozygous for the allele associated with gray body color and the mutant
+          gray body phenotype is <em>dominant</em>.
+        </legend>
+        <mitodl-genemutationinput-parent name="mutant1" display="Mutant 1" sex="M" genes="Gg" phenotype="Gray">
+          <picture><img src="mutant1.png" /></picture>
+        </mitodl-genemutationinput-parent>
+        <mitodl-genemutationinput-parent name="wildTypeF" display="Wild Type F" sex="F" genes="gg" phenotype="Wild Type">
+          <picture><img src="wildTypeF.png" /></picture>
+        </mitodl-genemutationinput-parent>
+      </mitodl-genemutationinput>
+
+
+    </oxq-problem>
+  -->
+</body>
+</html>
